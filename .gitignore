@@ -1,0 +1,124 @@
+# ================================
+# 内容工厂项目 - Git 忽略文件
+# ================================
+
+# ==================== 依赖目录 ====================
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ==================== 测试 ====================
+/coverage
+*.lcov
+.nyc_output
+
+# ==================== Next.js ====================
+/.next/
+/out/
+.next/
+next-env.d.ts
+
+# ==================== 构建产物 ====================
+/build
+/dist
+
+# ==================== 敏感信息 ====================
+# 环境变量文件（包含 API 密钥等）
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 密钥和证书
+*.pem
+*.key
+*.cert
+*.crt
+credentials.json
+
+# ==================== 数据库文件 ====================
+# SQLite 数据库
+/data/
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+*.db.backup
+
+# 数据导出目录
+data/export/
+
+# ==================== 日志文件 ====================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+logs/
+*.log
+
+# ==================== 系统文件 ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# ==================== 编辑器 ====================
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# JetBrains
+.idea/
+*.iml
+
+# Vim
+*.swp
+*.swo
+
+# ==================== 部署 ====================
+.vercel
+
+# ==================== TypeScript ====================
+*.tsbuildinfo
+
+# ==================== 临时文件 ====================
+tmp/
+temp/
+*.tmp
+*.cache
+.cache/
+
+# ==================== 备份文件 ====================
+*.bak
+*.backup
+*.old
+
+# ==================== 用户上传 ====================
+uploads/
+public/uploads/
+
+# ==================== 其他 ====================
+.claude/
