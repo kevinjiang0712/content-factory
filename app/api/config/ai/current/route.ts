@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { getCurrentConfig } from "@/lib/ai/config-loader"
-import { getActiveAIConfig } from "@/lib/db-supabase"
+import { getActiveAIConfig, createAIConfig } from "@/lib/db-supabase"
 import { maskApiKey } from "@/lib/crypto"
 
 /**
@@ -49,6 +49,76 @@ export async function GET() {
       {
         success: false,
         error: error instanceof Error ? error.message : "获取配置失败",
+      },
+      { status: 500 }
+    )
+  }
+}
+
+/**
+ * POST /api/config/ai/current
+ * 初始化数据库 - 创建默认 AI 配置
+ */
+export async function POST() {
+  try {
+    // 检查是否已有 AI 配置
+    const existingConfig = await getActiveAIConfig()
+    if (existingConfig) {
+      return NextResponse.json({
+        success: true,
+        message: '数据库已有 AI 配置，跳过初始化'
+      })
+    }
+
+    // 获取环境变量中的配置
+    const apiKey = process.env.OPENAI_API_KEY
+    const baseUrl = process.env.OPENAI_BASE_URL || 'https://openrouter.ai/api/v1'
+    const modelSummarize = process.env.OPENAI_MODEL_SUMMARIZE || 'openai/gpt-4o'
+    const modelInsights = process.env.OPENAI_MODEL_INSIGHTS || 'openai/gpt-4o'
+
+    if (!apiKey || !baseUrl) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: '缺少必要的环境变量：OPENAI_API_KEY 或 OPENAI_BASE_URL'
+        },
+        { status: 400 }
+      )
+    }
+
+    // 加密 API Key
+    const { encryptApiKey } = await import("@/lib/crypto")
+    const encryptedKey = encryptApiKey(apiKey)
+
+    // 创建默认 AI 配置
+    const configId = await createAIConfig({
+      config_name: '默认 OpenAI 配置',
+      provider: 'openai',
+      api_key: encryptedKey,
+      api_base_url: baseUrl,
+      model_summarize: modelSummarize,
+      model_insights: modelInsights,
+      prompt_summarize: '请将以下文章内容总结为简洁的摘要，突出主要观点和关键信息。',
+      prompt_insights: '请基于以下文章内容，分析出有价值的选题洞察，包括内容方向、目标受众、切入角度等。',
+      is_preset: 0,
+      is_active: 1,
+      last_used_at: null
+    })
+
+    console.log('✅ 成功创建默认 AI 配置，ID:', configId)
+
+    return NextResponse.json({
+      success: true,
+      message: '数据库初始化完成',
+      data: { configId }
+    })
+
+  } catch (error) {
+    console.error('❌ 数据库初始化失败:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : '数据库初始化失败'
       },
       { status: 500 }
     )
