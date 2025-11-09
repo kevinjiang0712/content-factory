@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -17,7 +17,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, Save, Send, Eye, Sparkles, Image, Link as LinkIcon, FileText } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useEffect } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import ModelSelectionDialogV2, { type CreationConfigV2 } from "@/components/model-selection-dialog-v2"
@@ -37,7 +36,8 @@ const toneOptions = [
   "专业严谨", "轻松幽默", "亲切友好", "激励鼓舞", "冷静客观"
 ]
 
-export default function CreateContentPage() {
+// 内部组件，用于处理 URL 参数
+function ContentCreator() {
   const searchParams = useSearchParams()
   const isGenerated = searchParams.get("generated") === "true"
 
@@ -789,5 +789,21 @@ export default function CreateContentPage() {
         )}
       </div>
     </div>
+  )
+}
+
+// 主组件，用 Suspense 包裹
+export default function CreateContentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-rose-600 border-r-transparent mb-4"></div>
+          <p className="text-slate-600">加载中...</p>
+        </div>
+      </div>
+    }>
+      <ContentCreator />
+    </Suspense>
   )
 }
