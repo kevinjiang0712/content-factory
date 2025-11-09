@@ -25,15 +25,15 @@ export async function POST(request: NextRequest) {
 
     // 保存到数据库
     const contentId = saveGeneratedContent({
-      insightId: null, // 手动编辑不需要关联洞察
+      insight_id: null, // 手动编辑不需要关联洞察
       title,
       summary: summary || null,
       content_text: content,
       content_with_images: content, // 直接使用编辑器内容
-      wordCount,
-      readingTime,
-      textModel: null,
-      imageModel: null,
+      word_count: wordCount,
+      reading_time: readingTime,
+      text_model: null,
+      image_model: null,
       images_data: images ? JSON.stringify(images) : null,
       content_source: 'manual'
     })

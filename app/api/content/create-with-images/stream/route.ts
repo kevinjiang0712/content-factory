@@ -243,15 +243,17 @@ ${config.customRequirements ? `- 特殊要求: ${config.customRequirements}` : '
 
         // 保存到数据库
         const contentData = {
-          insightId: config.insight.id,
+          insight_id: config.insight.id,
           title,
           summary,
-          contentText: articleText,
-          contentWithImages,
-          wordCount: articleText.length,
-          readingTime: Math.ceil(articleText.length / 300),
-          textModel: config.textModel,
-          imageModel: config.imageModel
+          content_text: articleText,
+          content_with_images: contentWithImages,
+          word_count: articleText.length,
+          reading_time: Math.ceil(articleText.length / 300),
+          text_model: config.textModel,
+          image_model: config.imageModel,
+          images_data: null,
+          content_source: 'ai' as 'ai' | 'manual'
         }
 
         const contentId = saveGeneratedContent(contentData)
@@ -259,14 +261,14 @@ ${config.customRequirements ? `- 特殊要求: ${config.customRequirements}` : '
         // 保存图片记录
         images.forEach(img => {
           saveGeneratedImage({
-            contentId,
+            content_id: contentId,
             paragraph_index: img.paragraphIndex,
             prompt: img.prompt,
-            negative_prompt: img.negative_prompt,
-            imageUrl: img.imageUrl,
-            localPath: img.localPath,
-            isPlaceholder: img.isPlaceholder,
-            generationTime: img.generationTime
+            negative_prompt: img.negative_prompt || '',
+            image_url: img.imageUrl,
+            local_path: img.localPath || '',
+            is_placeholder: img.isPlaceholder ? 1 : 0,
+            generation_time: img.generationTime || null
           })
         })
 

@@ -2,6 +2,7 @@
  * 飞书多维表格客户端
  */
 
+// @ts-ignore - 可选依赖，仅在使用飞书功能时需要
 import * as lark from '@larksuiteoapi/node-sdk'
 
 // 从环境变量读取配置
@@ -56,7 +57,7 @@ export async function getTenantAccessToken(): Promise<string> {
   // 提前 5 分钟刷新 token
   tokenExpireTime = now + (res.expire - 300) * 1000
 
-  return cachedToken
+  return cachedToken || ''
 }
 
 // 多维表格操作封装

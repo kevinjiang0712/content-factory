@@ -313,12 +313,12 @@ export function saveAnalysis(data: SaveAnalysisData): boolean {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
 
-      data.insights.forEach((insight, index) => {
+      data.insights.forEach((insight: any, index: number) => {
         insertInsight.run(
           data.batchId,
           insight.type,
           insight.title,
-          insight.suggestedTitle || insight.suggested_title, // 兼容两种字段名
+          insight.suggested_title || insight.suggestedTitle, // 兼容两种字段名
           insight.direction || null,
           insight.audience || null,
           insight.angle || null,
@@ -1017,10 +1017,10 @@ export function saveGeneratedContent(content: Omit<GeneratedContent, 'id' | 'cre
     content.summary || null,
     content.content_text,
     content.content_with_images || null,
-    content.wordCount || null,
-    content.readingTime || null,
-    content.textModel || null,
-    content.imageModel || null,
+    content.word_count || null,
+    content.reading_time || null,
+    content.text_model || null,
+    content.image_model || null,
     content.images_data || null,
     content.content_source || 'manual'
   )

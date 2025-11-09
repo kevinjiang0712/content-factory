@@ -89,9 +89,9 @@ export default function ModelSelectionDialogV2({
         const textData = await textResponse.json()
         if (textData.success && textData.data.length > 0) {
           const models = textData.data.map((m: any) => m.model_summarize || m.model_insights).filter(Boolean)
-          const unique = Array.from(new Set(models))
+          const unique = Array.from(new Set(models)) as string[]
           setTextModels(unique)
-          if (unique.length > 0) setSelectedTextModel(unique[0])
+          if (unique.length > 0) setSelectedTextModel(unique[0] as string)
         } else {
           // Fallback: 从当前配置获取
           const fallbackResponse = await fetch("/api/config/ai/current")

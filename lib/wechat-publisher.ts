@@ -59,7 +59,7 @@ export class WeChatPublisher {
         // 更新数据库中的token
         await this.updateAccessToken(data.access_token, this.tokenExpiresAt)
 
-        return this.accessToken
+        return this.accessToken || ''
       } else {
         throw new Error(data.errmsg || '获取access_token失败')
       }
