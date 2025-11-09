@@ -10,7 +10,7 @@ export async function GET(
     const { batch_id } = await params
     const batchId = batch_id
 
-    const detail = getBatchDetail(batchId)
+    const detail = await getBatchDetail(batchId)
 
     if (!detail) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function DELETE(
     const { batch_id } = await params
     const batchId = batch_id
 
-    const success = deleteBatch(batchId)
+    const success = await deleteBatch(batchId)
 
     if (!success) {
       return NextResponse.json(
