@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getDatabase } from "@/lib/db-supabase"
+import { supabase } from "@/lib/supabase"
 
 /**
  * GET /api/insights/all
@@ -19,59 +19,52 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const db = getDatabase()
     const offset = (page - 1) * limit
 
-    // 构建搜索条件
-    const searchCondition = search
-      ? `WHERE ti.title LIKE '%' || ? || '%'
-         OR ti.suggested_title LIKE '%' || ? || '%'
-         OR ti.direction LIKE '%' || ? || '%'
-         OR ab.keyword LIKE '%' || ? || '%'`
-      : ""
+    // 构建查询
+    let query = supabase
+      .from('topic_insights')
+      .select(`
+        id,
+        type,
+        title,
+        suggested_title,
+        direction,
+        audience,
+        angle,
+        source_article_title,
+        source_article_url,
+        source_article_wx_name,
+        created_at,
+        rank_index,
+        batch_id,
+        analysis_batches!inner (
+          batch_id,
+          keyword
+        )
+      `, { count: 'exact' })
 
-    const searchParams_array = search ? [search, search, search, search] : []
+    // 添加搜索条件
+    if (search) {
+      query = query.or(`title.ilike.%${search}%,suggested_title.ilike.%${search}%,direction.ilike.%${search}%`)
+    }
 
-    // 获取洞察数据，关联批次信息
-    const insightsStmt = db.prepare(`
-      SELECT
-        ti.id,
-        ti.type,
-        ti.title,
-        ti.suggested_title,
-        ti.direction,
-        ti.audience,
-        ti.angle,
-        ti.source_article_title,
-        ti.source_article_url,
-        ti.source_article_wx_name,
-        ti.created_at,
-        ti.rank_index,
-        ab.batch_id,
-        ab.keyword as batch_keyword,
-        ab.created_at as batch_created_at
-      FROM topic_insights ti
-      JOIN analysis_batches ab ON ti.batch_id = ab.batch_id
-      ${searchCondition}
-      ORDER BY ti.created_at DESC, ti.rank_index ASC
-      LIMIT ? OFFSET ?
-    `)
+    // 排序和分页
+    const { data: insights, error, count } = await query
+      .order('created_at', { ascending: false })
+      .order('rank_index', { ascending: true })
+      .range(offset, offset + limit - 1)
 
-    const insights = insightsStmt.all(...searchParams_array, limit, offset)
+    if (error) {
+      console.error('Supabase 查询错误:', error)
+      throw error
+    }
 
-    // 获取总数
-    const countStmt = db.prepare(`
-      SELECT COUNT(*) as total
-      FROM topic_insights ti
-      JOIN analysis_batches ab ON ti.batch_id = ab.batch_id
-      ${searchCondition}
-    `)
-    const { total } = countStmt.get(...searchParams_array) as { total: number }
-
+    const total = count || 0
     const totalPages = Math.ceil(total / limit)
 
     // 格式化数据
-    const formattedInsights = insights.map((insight: any) => ({
+    const formattedInsights = (insights || []).map((insight: any) => ({
       id: insight.id,
       type: insight.type,
       title: insight.title,
@@ -85,7 +78,7 @@ export async function GET(request: NextRequest) {
         wx_name: insight.source_article_wx_name || "",
       } : undefined,
       createdAt: insight.created_at,
-      batchKeyword: insight.batch_keyword,
+      batchKeyword: insight.analysis_batches?.keyword || '',
       batchId: insight.batch_id,
       rankIndex: insight.rank_index,
     }))
