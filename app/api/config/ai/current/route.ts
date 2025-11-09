@@ -13,7 +13,7 @@ export async function GET() {
     const config = await getCurrentConfig()
 
     // 检查是否有数据库配置
-    const dbConfig = getActiveAIConfig()
+    const dbConfig = await getActiveAIConfig()
 
     // 判断配置来源
     const source = dbConfig ? "database" : "environment"

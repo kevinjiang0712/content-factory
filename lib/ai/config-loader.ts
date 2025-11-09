@@ -3,7 +3,7 @@
  * 负责从数据库读取配置，如果没有则使用环境变量和默认值
  */
 
-import { getActiveAIConfig } from "../db"
+import { getActiveAIConfig } from "../db-supabase"
 import { decryptApiKey } from "../crypto"
 import { SYSTEM_PROMPT_SUMMARIZE, SYSTEM_PROMPT_INSIGHTS } from "./prompts"
 
@@ -59,7 +59,7 @@ function getDefaultConfig(): LoadedAIConfig {
  */
 async function loadActiveConfig(): Promise<LoadedAIConfig> {
   try {
-    const activeConfig = getActiveAIConfig()
+    const activeConfig = await getActiveAIConfig()
 
     if (!activeConfig) {
       console.log("[AI Config] 未找到激活的配置，使用环境变量默认值")
