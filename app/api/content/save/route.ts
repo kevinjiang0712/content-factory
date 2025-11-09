@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     const readingTime = Math.ceil(wordCount / 300)
 
     // 保存到数据库
-    const contentId = saveGeneratedContent({
+    const contentId = await saveGeneratedContent({
       insight_id: null, // 手动编辑不需要关联洞察
       title,
       summary: summary || null,
