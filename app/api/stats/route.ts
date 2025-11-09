@@ -9,18 +9,18 @@ export async function GET(request: NextRequest) {
     const timeRangeDays = timeRange ? parseInt(timeRange) : undefined
 
     // 获取全局统计
-    const globalStats = getGlobalStats(timeRangeDays)
+    const globalStats = await getGlobalStats(timeRangeDays)
 
     // 获取每日趋势（最近7天）
-    const dailyStats = getDailyStats(7)
+    const dailyStats = await getDailyStats(7)
 
     // 获取TOP文章
-    const topLikes = getTopArticles("praise", 5)
-    const topViews = getTopArticles("read_count", 5)
-    const topInteraction = getTopArticles("interaction_rate", 5)
+    const topLikes = await getTopArticles("praise", 5)
+    const topViews = await getTopArticles("read_count", 5)
+    const topInteraction = await getTopArticles("interaction_rate", 5)
 
     // 获取热词
-    const topWords = getTopWords(10)
+    const topWords = await getTopWords(10)
 
     return NextResponse.json({
       success: true,
