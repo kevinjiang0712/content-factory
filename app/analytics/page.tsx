@@ -225,7 +225,7 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {topContent.map((content, index) => (
+                {topContent.map((content: any, index: number) => (
                   <div
                     key={index}
                     className="flex items-start gap-4 p-4 rounded-lg hover:bg-slate-50 transition-colors"
