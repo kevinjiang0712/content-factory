@@ -39,6 +39,7 @@ interface BatchDetail {
   created_at: number
   articles: Article[]
   wordCloud: WordCloudItem[]
+  insights?: any[] // 选题洞察数据（可选）
 }
 
 export default function BatchDetailPage() {
