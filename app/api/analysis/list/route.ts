@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getBatchList, getBatchCount } from "@/lib/db"
+import { getBatchList, getBatchCount } from "@/lib/db-supabase"
 
 export async function GET(request: NextRequest) {
   try {

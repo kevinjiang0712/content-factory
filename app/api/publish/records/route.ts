@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getPublishRecords, updatePublishRecord } from "@/lib/db"
+import { getPublishRecords, updatePublishRecord } from "@/lib/db-supabase"
 
 /**
  * 获取发布记录

@@ -3,7 +3,7 @@
  * 支持创建草稿和发布文章
  */
 
-import { getPublishPlatforms, updatePublishPlatform } from "@/lib/db"
+import { getPublishPlatforms, updatePublishPlatform } from "@/lib/db-supabase"
 
 export interface WeChatContent {
   title: string // 标题，不超过64个字节

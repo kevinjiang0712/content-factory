@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getGlobalStats, getDailyStats, getTopArticles, getTopWords } from "@/lib/db"
+import { getGlobalStats, getDailyStats, getTopArticles, getTopWords } from "@/lib/db-supabase"
 
 export async function GET(request: NextRequest) {
   try {

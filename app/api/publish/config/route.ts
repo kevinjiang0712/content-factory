@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getPublishPlatforms, savePublishPlatform, updatePublishPlatform } from "@/lib/db"
+import { getPublishPlatforms, savePublishPlatform, updatePublishPlatform } from "@/lib/db-supabase"
 
 /**
  * 获取或更新发布平台配置

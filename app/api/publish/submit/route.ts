@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getGeneratedContent, getGeneratedImages, savePublishRecord, updatePublishRecord } from "@/lib/db"
+import { getGeneratedContent, getGeneratedImages, savePublishRecord, updatePublishRecord } from "@/lib/db-supabase"
 import { getWeChatPublisher, WeChatContent } from "@/lib/wechat-publisher"
 import { getXiaohongshuPublisher, XiaohongshuContent } from "@/lib/xiaohongshu-publisher"
 

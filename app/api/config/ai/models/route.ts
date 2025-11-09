@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAIConfigsByType } from "@/lib/db"
+import { getAIConfigsByType } from "@/lib/db-supabase"
 
 /**
  * 获取模型列表API

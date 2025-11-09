@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { saveAnalysis, generateBatchId } from "@/lib/db"
+import { saveAnalysis, generateBatchId } from "@/lib/db-supabase"
 
 export async function POST(request: NextRequest) {
   try {

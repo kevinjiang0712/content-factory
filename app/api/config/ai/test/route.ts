@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
-import { saveAITestLog } from "@/lib/db"
+import { saveAITestLog } from "@/lib/db-supabase"
 
 /**
  * POST /api/config/ai/test

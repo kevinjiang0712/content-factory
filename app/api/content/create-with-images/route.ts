@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
-import { getActiveAIConfig } from "@/lib/db"
+import { getActiveAIConfig } from "@/lib/db-supabase"
 import {
   getAnalysisPrompt,
   parseAnalysisResult,

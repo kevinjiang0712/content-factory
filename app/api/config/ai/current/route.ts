@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { getCurrentConfig } from "@/lib/ai/config-loader"
-import { getActiveAIConfig } from "@/lib/db"
+import { getActiveAIConfig } from "@/lib/db-supabase"
 import { maskApiKey } from "@/lib/crypto"
 
 /**

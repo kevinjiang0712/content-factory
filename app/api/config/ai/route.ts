@@ -7,7 +7,7 @@ import {
   activateAIConfig,
   deleteAIConfig,
   getAllAIConfigTemplates,
-} from "@/lib/db"
+} from "@/lib/db-supabase"
 import { encryptApiKey, maskApiKey, decryptApiKey } from "@/lib/crypto"
 import { refreshConfigCache } from "@/lib/ai/config-loader"
 import { SYSTEM_PROMPT_SUMMARIZE, SYSTEM_PROMPT_INSIGHTS } from "@/lib/ai/prompts"

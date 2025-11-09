@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getBatchDetail, deleteBatch } from "@/lib/db"
+import { getBatchDetail, deleteBatch } from "@/lib/db-supabase"
 
 // GET 获取批次详情
 export async function GET(

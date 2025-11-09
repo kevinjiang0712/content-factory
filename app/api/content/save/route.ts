@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { saveGeneratedContent } from "@/lib/db"
+import { saveGeneratedContent } from "@/lib/db-supabase"
 
 /**
  * 保存手动编辑的内容
