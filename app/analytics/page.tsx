@@ -168,8 +168,8 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {weeklyData.map((data, index) => {
-                  const maxViews = Math.max(...weeklyData.map((d) => d.views))
+                {weeklyData.map((data: any, index: number) => {
+                  const maxViews = Math.max(...weeklyData.map((d: any) => d.views))
                   const viewsPercent = (data.views / maxViews) * 100
                   const likesPercent = (data.likes / (maxViews / 10)) * 100
 
