@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * pageSize
 
     // 获取批次列表和总数
-    const batches = getBatchList(pageSize, offset)
-    const total = getBatchCount()
+    const batches = await getBatchList(pageSize, offset)
+    const total = await getBatchCount()
 
     // 计算总页数
     const totalPages = Math.ceil(total / pageSize)

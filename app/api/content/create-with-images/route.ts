@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     const { insight, config } = body
 
     // 1. 获取 AI 配置
-    const aiConfig = getActiveAIConfig()
+    const aiConfig = await getActiveAIConfig()
     if (!aiConfig) {
       return NextResponse.json(
         { success: false, error: "未找到激活的 AI 配置" },

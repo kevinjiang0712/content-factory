@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 获取内容
-    const content = getGeneratedContent(contentId)
+    const content = await getGeneratedContent(contentId)
     if (!content) {
       return NextResponse.json(
         {
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 获取图片
-    const images = getGeneratedImages(contentId)
+    const images = await getGeneratedImages(contentId)
 
     // 并行发布到各平台
     const publishPromises = platforms.map((platform: string) =>
@@ -101,11 +101,11 @@ async function publishToPlatform(
   scheduledAt?: number
 ): Promise<any> {
   // 创建发布记录
-  const recordId = savePublishRecord({
+  const recordId = await savePublishRecord({
     content_id: content.id,
     platform,
     status: 'pending',
-    scheduled_at: scheduledAt,
+    scheduled_at: scheduledAt || null,
     retry_count: 0
   })
 
@@ -121,7 +121,7 @@ async function publishToPlatform(
     }
 
     // 更新发布记录
-    updatePublishRecord(recordId, {
+    await updatePublishRecord(recordId, {
       status: result.success ? 'success' : 'failed',
       platform_post_id: result.mediaId || result.postId,
       published_url: result.publishedUrl,
@@ -135,7 +135,7 @@ async function publishToPlatform(
 
   } catch (error) {
     // 更新发布记录为失败
-    updatePublishRecord(recordId, {
+    await updatePublishRecord(recordId, {
       status: 'failed',
       error_message: error instanceof Error ? error.message : String(error)
     })
@@ -148,7 +148,7 @@ async function publishToPlatform(
  * 发布到微信公众号
  */
 async function publishToWeChat(content: any, images: any[]): Promise<any> {
-  const publisher = getWeChatPublisher()
+  const publisher = await getWeChatPublisher()
 
   if (!publisher) {
     throw new Error("微信发布器未配置，请先配置微信公众号")

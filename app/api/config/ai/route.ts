@@ -23,13 +23,13 @@ export async function GET(request: NextRequest) {
 
     // 获取配置模板
     if (type === "templates") {
-      const templates = getAllAIConfigTemplates()
+      const templates = await getAllAIConfigTemplates()
       return NextResponse.json({ success: true, data: templates })
     }
 
     // 获取当前激活的配置
     if (type === "active") {
-      const activeConfig = getActiveAIConfig()
+      const activeConfig = await getActiveAIConfig()
       if (!activeConfig) {
         return NextResponse.json({ success: true, data: null })
       }
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取所有配置
-    const configs = getAllAIConfigs()
+    const configs = await getAllAIConfigs()
 
     // 遮罩所有配置的 API Key
     const maskedConfigs = configs.map((config) => {
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
 
     if (id) {
       // 更新现有配置
-      const success = updateAIConfig(id, {
+      const success = await updateAIConfig(id, {
         config_name,
         provider,
         api_key: encryptedKey,
@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
 
       // 如果需要激活
       if (is_active) {
-        activateAIConfig(id)
+        await activateAIConfig(id)
         refreshConfigCache()
       }
 
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
       })
     } else {
       // 创建新配置
-      const newId = createAIConfig({
+      const newId = await createAIConfig({
         config_name,
         provider,
         api_key: encryptedKey,
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
 
       // 如果需要激活
       if (is_active) {
-        activateAIConfig(newId)
+        await activateAIConfig(newId)
         refreshConfigCache()
       }
 
@@ -205,7 +205,7 @@ export async function PUT(request: NextRequest) {
         )
       }
 
-      const success = activateAIConfig(id)
+      const success = await activateAIConfig(id)
       if (!success) {
         return NextResponse.json(
           { success: false, error: "激活配置失败" },
@@ -251,7 +251,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const success = deleteAIConfig(parseInt(id))
+    const success = await deleteAIConfig(parseInt(id))
     if (!success) {
       return NextResponse.json(
         { success: false, error: "删除配置失败（可能是预设配置）" },

@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const platform = searchParams.get("platform") || undefined
     const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit")!) : 20
 
-    const records = getPublishRecords(contentId, platform, limit)
+    const records = await getPublishRecords(contentId)
 
     return NextResponse.json({
       success: true,
@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const success = updatePublishRecord(id, {
+    const success = await updatePublishRecord(id, {
       status,
       error_message: errorMessage
     })

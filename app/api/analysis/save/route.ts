@@ -19,11 +19,12 @@ export async function POST(request: NextRequest) {
 
     // 保存到数据库
     try {
-      const success = saveAnalysis({
+      const success = await saveAnalysis({
         batchId,
         keyword,
         timeRange: parseInt(timeRange) || 7,
         articleCount: parseInt(articleCount) || 20,
+        totalArticles: articles?.length || 0,
         articles,
         wordCloud,
         insights: insights || [], // 添加洞察数据

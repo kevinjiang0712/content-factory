@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 获取指定类型的模型配置
-    const configs = getAIConfigsByType(type)
+    const configs = await getAIConfigsByType(type)
 
     return NextResponse.json({
       success: true,

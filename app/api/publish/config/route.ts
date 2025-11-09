@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const platform = searchParams.get("platform") as 'wechat' | 'xiaohongshu' | null
 
-    const platforms = getPublishPlatforms(platform || undefined)
+    const platforms = await getPublishPlatforms(platform || undefined)
 
     // 脱敏处理，不返回敏感信息
     const safePlatforms = platforms.map(p => ({
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       is_active: 1
     }
 
-    const id = savePublishPlatform(platformConfig)
+    const id = await savePublishPlatform(platformConfig)
 
     return NextResponse.json({
       success: true,
@@ -96,7 +96,7 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const success = updatePublishPlatform(id, updates)
+    const success = await updatePublishPlatform(id, updates)
 
     if (success) {
       return NextResponse.json({

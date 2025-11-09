@@ -81,7 +81,7 @@ export interface AIConfig {
   model_insights: string
   prompt_summarize: string
   prompt_insights: string
-  model_type: string
+  model_type?: string  // 可选字段，有默认值
   is_preset: number
   is_active: number
   last_used_at: number | null
@@ -123,13 +123,13 @@ export interface PublishPlatform {
   id: number
   platform: 'wechat' | 'xiaohongshu'
   platform_name: string
-  app_id: string | null
-  app_secret: string | null
-  access_token: string | null
-  refresh_token: string | null
-  token_expires_at: number | null
-  webhook_url: string | null
-  webhook_secret: string | null
+  app_id?: string | null
+  app_secret?: string | null
+  access_token?: string | null
+  refresh_token?: string | null
+  token_expires_at?: number | null
+  webhook_url?: string | null
+  webhook_secret?: string | null
   is_active: number
   created_at: number
   updated_at: number
@@ -139,13 +139,13 @@ export interface PublishRecord {
   id: number
   content_id: number
   platform: string
-  platform_post_id: string | null
-  status: 'pending' | 'success' | 'failed' | 'cancelled'
-  error_message: string | null
-  published_url: string | null
-  scheduled_at: number | null
-  published_at: number | null
-  retry_count: number
+  platform_post_id?: string | null
+  status?: 'pending' | 'success' | 'failed' | 'cancelled'
+  error_message?: string | null
+  published_url?: string | null
+  scheduled_at?: number | null
+  published_at?: number | null
+  retry_count?: number
   created_at: number
 }
 

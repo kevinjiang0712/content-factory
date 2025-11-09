@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         const { insight, config } = body
 
         // 获取 AI 配置
-        const aiConfig = getActiveAIConfig()
+        const aiConfig = await getActiveAIConfig()
         if (!aiConfig) {
           sendEvent({ type: "error", error: "未找到激活的 AI 配置" })
           controller.close()
@@ -256,11 +256,11 @@ ${config.customRequirements ? `- 特殊要求: ${config.customRequirements}` : '
           content_source: 'ai' as 'ai' | 'manual'
         }
 
-        const contentId = saveGeneratedContent(contentData)
+        const contentId = await saveGeneratedContent(contentData)
 
         // 保存图片记录
-        images.forEach(img => {
-          saveGeneratedImage({
+        for (const img of images) {
+          await saveGeneratedImage({
             content_id: contentId,
             paragraph_index: img.paragraphIndex,
             prompt: img.prompt,
@@ -270,7 +270,7 @@ ${config.customRequirements ? `- 特殊要求: ${config.customRequirements}` : '
             is_placeholder: img.isPlaceholder ? 1 : 0,
             generation_time: img.generationTime || null
           })
-        })
+        }
 
         // 完成
         sendEvent({

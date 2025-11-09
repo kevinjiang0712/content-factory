@@ -72,11 +72,11 @@ export class WeChatPublisher {
    * 更新数据库中的访问令牌
    */
   private async updateAccessToken(accessToken: string, expiresAt: number): Promise<void> {
-    const platforms = getPublishPlatforms('wechat')
+    const platforms = await getPublishPlatforms('wechat')
     const wechatPlatform = platforms.find(p => p.app_id === this.appId)
 
     if (wechatPlatform) {
-      updatePublishPlatform(wechatPlatform.id, {
+      await updatePublishPlatform(wechatPlatform.id, {
         access_token: accessToken,
         token_expires_at: expiresAt
       })
@@ -331,8 +331,8 @@ export class WeChatPublisher {
 /**
  * 获取微信发布器实例
  */
-export function getWeChatPublisher(): WeChatPublisher | null {
-  const platforms = getPublishPlatforms('wechat')
+export async function getWeChatPublisher(): Promise<WeChatPublisher | null> {
+  const platforms = await getPublishPlatforms('wechat')
   const wechatPlatform = platforms.find(p => p.app_id && p.app_secret)
 
   if (!wechatPlatform || !wechatPlatform.app_id || !wechatPlatform.app_secret) {
